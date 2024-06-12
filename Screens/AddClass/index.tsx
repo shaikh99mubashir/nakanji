@@ -25,6 +25,8 @@ import {useIsFocused} from '@react-navigation/native';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import CustomLoader from '../../Component/CustomLoader';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Schedule from '../../SVGs/Schedule';
+import Clock from '../../SVGs/Clock';
 
 function AddClass({navigation}: any) {
   const [student, setStudent] = useState([]);
@@ -317,10 +319,11 @@ function AddClass({navigation}: any) {
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() => setClassDate('date', index)}>
-              <Image
+              {/* <Image
                 source={require('../../Assets/Images/ScheduleIcon.png')}
                 style={{width: 20, height: 20}}
-              />
+              /> */}
+              <Schedule width={20} height={20}/>
             </TouchableOpacity>
           </View>
         </View>
@@ -354,10 +357,11 @@ function AddClass({navigation}: any) {
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() => setClassDate('time', index, true)}>
-                <Image
+                {/* <Image
                   source={require('../../Assets/Images/ClockiconCopy.png')}
                   style={{width: 20, height: 20}}
-                />
+                /> */}
+                <Clock width={20} height={20}/>
               </TouchableOpacity>
             </View>
           </View>

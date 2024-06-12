@@ -10,7 +10,7 @@ const Theme = {
     gray : "gray",
     // lightGray : "#DDE6ED",
     lightGray : "#eee",
-    darkGray : "#243cb3",
+    darkGray : "#207055",
     Dune:"#333333",
     GhostWhite:'#F5F9FF',
     jobticketBG:'rgba(9, 97, 245, 0.05)',

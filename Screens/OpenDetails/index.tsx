@@ -79,6 +79,18 @@ const OpenDetails = ({route, navigation}: any) => {
       .catch(error => {
         setLoading(false);
         console.log(error, 'error');
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          console.log('Server responded with data:', error.response.data);
+          console.log('Status code:', error.response.status);
+          console.log('Headers:', error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.log('No response received:', error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error setting up the request:', error.message);
+        }
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
@@ -166,7 +178,7 @@ const OpenDetails = ({route, navigation}: any) => {
                     flexDirection: 'row',
                     gap: 10,
                   }}>
-                  <FontAwesome name="user-o" size={18} color={'#298CFF'} />
+                  <FontAwesome name="user-o" size={18} color={Theme.darkGray} />
                   <Text style={styles.textType3}>Student Name</Text>
                 </View>
                 <Text
@@ -193,7 +205,7 @@ const OpenDetails = ({route, navigation}: any) => {
                   <FontAwesome
                     name="graduation-cap"
                     size={18}
-                    color={'#298CFF'}
+                    color={Theme.darkGray}
                   />
                   <Text style={styles.textType3}>Student Detail</Text>
                 </View>
@@ -215,7 +227,7 @@ const OpenDetails = ({route, navigation}: any) => {
                     flexDirection: 'row',
                     gap: 10,
                   }}>
-                  <Feather name="hash" size={18} color={'#298CFF'} />
+                  <Feather name="hash" size={18} color={Theme.darkGray} />
                   <Text style={styles.textType3}>No. of Sessions</Text>
                 </View>
 
@@ -223,8 +235,8 @@ const OpenDetails = ({route, navigation}: any) => {
                   style={[
                     styles.textType1,
                     {
-                      color: '#003E9C',
-                      backgroundColor: '#298CFF33',
+                      color: Theme.darkGray,
+                      backgroundColor: Theme.jobticketBG,
                       paddingVertical: 2,
                       // paddingHorizontal: 10,
                       borderRadius: 50,
@@ -251,7 +263,7 @@ const OpenDetails = ({route, navigation}: any) => {
                     flexDirection: 'row',
                     gap: 10,
                   }}>
-                  <Entypo name="time-slot" size={18} color={'#298CFF'} />
+                  <Entypo name="time-slot" size={18} color={Theme.darkGray} />
                   <Text style={styles.textType3}>Class Duration(Hrs)</Text>
                 </View>
 
@@ -259,15 +271,15 @@ const OpenDetails = ({route, navigation}: any) => {
                   style={[
                     styles.textType1,
                     {
-                      color: '#003E9C',
-                      backgroundColor: '#298CFF33',
+                      color: Theme.darkGray,
+                      backgroundColor: Theme.jobticketBG,
                       paddingVertical: 2,
                       // paddingHorizontal: 10,
                       borderRadius: 50,
                       textAlign: 'center',
                       width: 30,
                       height: 30,
-                      fontSize: 18,
+                      fontSize: 16,
                     },
                   ]}>
                   {data?.quantity}
@@ -296,11 +308,11 @@ const OpenDetails = ({route, navigation}: any) => {
                     gap: 12,
                     paddingBottom: 15,
                   }}>
-                  <FontAwesome name="level-up" size={22} color={'#298CFF'} />
+                  <FontAwesome name="level-up" size={22} color={Theme.darkGray} />
                   <Text style={styles.textType3}>Level</Text>
                 </View>
                 <Text style={[styles.textType1, {fontSize: 18}]}>
-                  {data?.categoryName}
+                  {data?.level}
                 </Text>
               </View>
               <View
@@ -317,11 +329,11 @@ const OpenDetails = ({route, navigation}: any) => {
                     gap: 12,
                     paddingBottom: 15,
                   }}>
-                  <Ionicons name="recording-sharp" size={18} color={'#298CFF'} />
-                  <Text style={styles.textType3}>Subscription</Text>
+                  <Feather name="package" size={18} color={Theme.darkGray} />
+                  <Text style={styles.textType3}>Package</Text>
                 </View>
                 <Text style={[styles.textType1, {fontSize: 18}]}>
-                  {data?.subscription}
+                  {data?.package}
                 </Text>
               </View>
 
@@ -338,7 +350,7 @@ const OpenDetails = ({route, navigation}: any) => {
                     flexDirection: 'row',
                     gap: 10,
                   }}>
-                  <AntDesign name="copy1" size={18} color={'#298CFF'} />
+                  <AntDesign name="copy1" size={18} color={Theme.darkGray} />
                   <Text style={styles.textType3}>Subject</Text>
                 </View>
                 <Text style={[styles.textType1, {fontSize: 18}]}>
@@ -361,7 +373,7 @@ const OpenDetails = ({route, navigation}: any) => {
                     flexDirection: 'row',
                     gap: 10,
                   }}>
-                  <FontAwesome name="user-o" size={18} color={'#298CFF'} />
+                  <FontAwesome name="user-o" size={18} color={Theme.darkGray} />
                   <Text style={styles.textType3}>Pref. Tutor</Text>
                 </View>
                 <Text
@@ -383,7 +395,7 @@ const OpenDetails = ({route, navigation}: any) => {
                 }}>
                 <View
                   style={{
-                    backgroundColor: '#E6F2FF',
+                    backgroundColor: Theme.jobticketBG,
                     paddingVertical: 10,
                     borderRadius: 10,
                   }}>
@@ -395,15 +407,15 @@ const OpenDetails = ({route, navigation}: any) => {
                       gap: 10,
                       paddingHorizontal: 10,
                     }}>
-                    <AntDesign name="calendar" size={20} color={'#298CFF'} />
-                    <Text style={[styles.textType3, {color: '#298CFF'}]}>
+                    <AntDesign name="calendar" size={20} color={Theme.darkGray} />
+                    <Text style={[styles.textType3, {color: Theme.darkGray}]}>
                       {data?.classDay}
                     </Text>
                   </View>
                 </View>
                 <View
                   style={{
-                    backgroundColor: '#E6F2FF',
+                    backgroundColor: Theme.jobticketBG,
                     paddingVertical: 10,
                     borderRadius: 10,
                     paddingHorizontal: 10,
@@ -418,9 +430,9 @@ const OpenDetails = ({route, navigation}: any) => {
                     <AntDesign
                       name="clockcircleo"
                       size={20}
-                      color={'#298CFF'}
+                      color={Theme.darkGray}
                     />
-                    <Text style={[styles.textType3, {color: '#298CFF'}]}>
+                    <Text style={[styles.textType3, {color: Theme.darkGray}]}>
                       {data?.classTime}
                     </Text>
                   </View>

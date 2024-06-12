@@ -121,7 +121,7 @@ const Verification = ({ navigation, route }: any) => {
           AsyncStorage.setItem('loginAuth', mydata);
           console.log('mydata',mydata);
           
-          sendDeviceTokenToDatabase(data.tutorID)
+          // sendDeviceTokenToDatabase(data.tutorID)
           console.log('data.tutorID',data.tutorID);
           
           axios
@@ -143,64 +143,17 @@ const Verification = ({ navigation, route }: any) => {
                 navigation.replace('Signup', tutorData)
               }
               else if(tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'unverified' || tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'verified'){
-                // navigation.replace('Main', {
-                //   screen: 'Home',
-                // });
                 navigation.reset({
                   index: 0,
                   routes: [{ name: 'Main' }],
                 });
                 ToastAndroid.show(`Login Successfully`, ToastAndroid.SHORT);
               }
-              // else (tutorData?.tutorDetailById[0]?.status === 'unverified' || tutorData?.tutorDetailById[0]?.status === 'verified') 
-              // {
-              //   // navigation.replace('Main')
-              //   navigation.replace('Main', {
-              //     screen: 'Home',
-              //   });
-              //   console.log(tutorData?.tutorDetailById[0]?.status, 'unverified or verified verification');
-              // }
-              // else if (tutorData?.tutorDetailById[0]?.status === 'terminated' || tutorData?.tutorDetailById[0]?.status === 'resigned') {
-              //   AsyncStorage.removeItem('loginAuth');
-              //   navigation.replace('Login')
-              //   console.log(tutorData?.tutorDetailById[0]?.status,'terminated or block');
-              // }
-              // else {
-              //   // navigation.replace('JobTicket')
-              // }
-              // if (
-              //   !tutorData.tutorDetailById[0]?.full_name &&
-              //   !tutorData.tutorDetailById[0]?.displayName
-              // ) {
-              //   navigation.reset({
-              //     index: 0,
-              //     routes: [
-              //       {
-              //         name: 'TutorDetails',
-              //         params: {
-              //           tutorData,
-              //         },
-              //       },
-              //     ],
-              //   });
-              // } else {
-              //   navigation.reset({
-              //     index: 0,
-              //     routes: [
-              //       {
-              //         name: 'Main',
-              //         params: {
-              //           data,
-              //         },
-              //       },
-              //     ],
-              //   });
-              // }
             });
         }
       })
       .catch(error => {
-        console.log('reeoe', error.errorMessage);
+        console.log('reeoe', error);
 
         ToastAndroid.show('Invalid Code', ToastAndroid.SHORT);
         setLoading(false);

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useContext } from 'react';
+import React, {useState, useCallback, useEffect, useContext} from 'react';
 import {
   View,
   Text,
@@ -16,11 +16,11 @@ import {
   StyleSheet,
 } from 'react-native';
 import Header from '../../Component/Header';
-import { Theme } from '../../constant/theme';
+import {Theme} from '../../constant/theme';
 import CustomTabView from '../../Component/CustomTabView';
-import { Base_Uri } from '../../constant/BaseUri';
+import {Base_Uri} from '../../constant/BaseUri';
 import axios from 'axios';
-import { useIsFocused } from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 import AsyncStorage, {
   useAsyncStorage,
 } from '@react-native-async-storage/async-storage';
@@ -39,22 +39,22 @@ interface LoginAuth {
   tutorID: Number;
   token: string;
 }
-function JobTicket({ navigation, route }: any) {
+function JobTicket({navigation, route}: any) {
   const focus = useIsFocused();
   const filter = useContext(filterContext);
-  const { setCategory, setSubjects, setState, setCity } = filter;
+  const {setCategory, setSubjects, setState, setCity} = filter;
   let data = route.params;
 
   const bannerCont = useContext(bannerContext);
 
-  let { jobTicketBanner, setJobTicketBanner } = bannerCont;
+  let {jobTicketBanner, setJobTicketBanner} = bannerCont;
   let loginData: LoginAuth;
   const [isSearchItems, setIsSearchItems] = useState(false);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const tutor = useContext(TutorDetailsContext);
   const [modalVisible, setModalVisible] = useState(false);
-  let { tutorDetails, updateTutorDetails, setTutorDetail } = tutor;
+  let {tutorDetails, updateTutorDetails, setTutorDetail} = tutor;
   const [currentTab, setCurrentTab]: any = useState([
     {
       index: 0,
@@ -108,21 +108,21 @@ function JobTicket({ navigation, route }: any) {
     }
   }, [refresh]);
 
-  const [tutorId, setTutorId] = useState<Number | null>(null)
+  const [tutorId, setTutorId] = useState<Number | null>(null);
 
   const getTutorId = async () => {
     const data: any = await AsyncStorage.getItem('loginAuth');
     loginData = JSON.parse(data);
 
-    let { tutorID } = loginData;
+    let {tutorID} = loginData;
     setTutorId(tutorID);
   };
 
   const getCategory = () => {
     axios
       .get(`${Base_Uri}getCategories`)
-      .then(({ data }) => {
-        let { categories } = data;
+      .then(({data}) => {
+        let {categories} = data;
 
         let myCategories =
           categories &&
@@ -145,8 +145,8 @@ function JobTicket({ navigation, route }: any) {
   const getSubject = () => {
     axios
       .get(`${Base_Uri}getSubjects`)
-      .then(({ data }) => {
-        let { subjects } = data;
+      .then(({data}) => {
+        let {subjects} = data;
 
         let mySubject =
           subjects &&
@@ -170,8 +170,8 @@ function JobTicket({ navigation, route }: any) {
   const getStates = () => {
     axios
       .get(`${Base_Uri}getStates`)
-      .then(({ data }) => {
-        let { states } = data;
+      .then(({data}) => {
+        let {states} = data;
 
         let myStates =
           states &&
@@ -194,8 +194,8 @@ function JobTicket({ navigation, route }: any) {
   const getCities = () => {
     axios
       .get(`${Base_Uri}getCities`)
-      .then(({ data }) => {
-        let { cities } = data;
+      .then(({data}) => {
+        let {cities} = data;
         let myCities =
           cities &&
           cities.length > 0 &&
@@ -229,13 +229,13 @@ function JobTicket({ navigation, route }: any) {
 
     axios
       .get(`${Base_Uri}getTutorDetailByID/${tutorId}`)
-      .then(({ data }) => {
-        let { tutorDetailById } = data;
+      .then(({data}) => {
+        let {tutorDetailById} = data;
         let tutorDetails = tutorDetailById[0];
         if (data.tutorDetailById == null) {
           AsyncStorage.removeItem('loginAuth');
           navigation.replace('Login');
-          setTutorDetail('')
+          setTutorDetail('');
           ToastAndroid.show('Terminated', ToastAndroid.SHORT);
           return;
         }
@@ -252,11 +252,14 @@ function JobTicket({ navigation, route }: any) {
           status: tutorDetails?.status,
         };
         updateTutorDetails(details);
-        if (tutorDetailById[0].status.toLowerCase() == 'verified' && tutorDetailById[0]?.open_dashboard != 'yes') {
+        if (
+          tutorDetailById[0].status.toLowerCase() == 'verified' &&
+          tutorDetailById[0]?.open_dashboard != 'yes'
+        ) {
           axios
             .get(`${Base_Uri}api/update_dashboard_status/${tutorId}`)
-            .then(({ data }) => {
-              setModalVisible(true)
+            .then(({data}) => {
+              setModalVisible(true);
             })
             .catch((error: any) => {
               console.log('errror========>', error);
@@ -279,7 +282,7 @@ function JobTicket({ navigation, route }: any) {
       filter = JSON.parse(filter);
       console.log(filter, 'filter');
 
-      let { Category, subject, mode, state, city } = filter;
+      let {Category, subject, mode, state, city} = filter;
       let categoryID = Category.id ?? 'noFilter';
       let subjectID = subject.id ?? 'noFilter';
       let myMode = mode.subject ?? 'noFilter';
@@ -288,14 +291,14 @@ function JobTicket({ navigation, route }: any) {
 
       axios
         .get(`${Base_Uri}ticketsAPI/${tutorDetails?.tutorId}`)
-        .then(({ data }) => {
-          let { tickets } = data;
+        .then(({data}) => {
+          let {tickets} = data;
           setOpenData(
             tickets?.filter((e: any, i: number) => {
               return (
                 (myMode == 'noFilter' ||
                   e?.mode?.toString()?.toLowerCase() ==
-                  myMode?.toString()?.toLowerCase()) &&
+                    myMode?.toString()?.toLowerCase()) &&
                 (subjectID == 'noFilter' || e?.subject_id == subjectID) &&
                 (categoryID == 'noFilter' || e?.categoryID == categoryID) &&
                 (myCity == 'noFilter' || e?.cityID == myCity) &&
@@ -319,8 +322,8 @@ function JobTicket({ navigation, route }: any) {
       let tutor_id = tutorData?.tutorID;
       axios
         .get(`${Base_Uri}ticketsAPI/${tutor_id}`)
-        .then(async ({ data }) => {
-          let { tickets } = data;
+        .then(async ({data}) => {
+          let {tickets} = data;
           setOpenData(tickets);
         })
         .catch(error => {
@@ -343,8 +346,8 @@ function JobTicket({ navigation, route }: any) {
     if (status) {
       axios
         .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
-        .then(({ data }) => {
-          let { getTutorOffers } = data;
+        .then(({data}) => {
+          let {getTutorOffers} = data;
           let tutorOffer =
             getTutorOffers &&
             getTutorOffers.length > 0 &&
@@ -357,7 +360,7 @@ function JobTicket({ navigation, route }: any) {
           setAppliedData(tutorOffer);
           setLoading(false);
         })
-        .catch((error) => {
+        .catch(error => {
           ToastAndroid.show(
             'Internal Server Error getTutorOffers filter DATA',
             ToastAndroid.SHORT,
@@ -369,8 +372,8 @@ function JobTicket({ navigation, route }: any) {
 
     axios
       .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
-      .then(({ data }) => {
-        let { getTutorOffers } = data;
+      .then(({data}) => {
+        let {getTutorOffers} = data;
         setAppliedData(getTutorOffers);
         setLoading(false);
       })
@@ -389,7 +392,7 @@ function JobTicket({ navigation, route }: any) {
 
   useEffect(() => {
     if (tutorId) {
-      setLoading(true)
+      setLoading(true);
       checkTutorStatus();
       getTicketsData();
       getAppliedData();
@@ -407,7 +410,7 @@ function JobTicket({ navigation, route }: any) {
 
   const HandelGoToDashboard = () => {
     setModalVisible(false);
-    navigation.navigate('Home')
+    navigation.navigate('Home');
     navigation.reset({
       index: 0,
       routes: [
@@ -461,7 +464,7 @@ function JobTicket({ navigation, route }: any) {
     setFoundName(filteredItems);
   };
 
-  const renderOpenData: any = ({ item }: any) => {
+  const renderOpenData: any = ({item}: any) => {
     return (
       <>
         <TouchableOpacity
@@ -484,21 +487,28 @@ function JobTicket({ navigation, route }: any) {
               borderColor: Theme.lightGray,
             }}>
             <View>
-              <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium'}]}>{item?.jtuid}</Text>
-              <Text style={[styles.textType1, { lineHeight: 30,fontFamily: 'Circular Std Medium' }]}>
+              <Text
+                style={[styles.textType3, {fontFamily: 'Circular Std Medium'}]}>
+                {item?.jtuid}
+              </Text>
+              <Text
+                style={[
+                  styles.textType1,
+                  {lineHeight: 30, fontFamily: 'Circular Std Medium'},
+                ]}>
                 RM {item?.price}
               </Text>
-
             </View>
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{alignItems: 'center', justifyContent: 'center'}}>
               <Text
                 style={[
                   styles.textType3,
                   {
                     // color: '#003E9C',
                     // backgroundColor: '#298CFF33',
-                    color: item.mode == 'online'? Theme.darkGray : '#1FC07D',
-                    backgroundColor: item.mode == 'online'? '#298CFF33' : Theme.lightGreen,
+                    color: item.mode == 'online' ? Theme.darkGray : '#1FC07D',
+                    backgroundColor:
+                      item.mode == 'online' ? '#a5d3c4' : Theme.jobticketBG,
                     fontFamily: 'Circular Std Medium',
                     paddingVertical: 5,
                     paddingHorizontal: 30,
@@ -510,19 +520,29 @@ function JobTicket({ navigation, route }: any) {
               </Text>
             </View>
           </View>
-          {item?.mode.toLowerCase() == 'physical' &&
+          {item?.mode.toLowerCase() == 'physical' && (
+            <View
+              style={{
+                flexDirection: 'row',
+                gap: 5,
+                alignItems: 'center',
+              }}>
+              <Feather name="map-pin" size={18} color={'#003E9C'} />
+              <Text
+                style={[
+                  styles.textType3,
+                  {color: '#003E9C', fontFamily: 'Circular Std Medium'},
+                ]}>
+                {item?.city}
+              </Text>
+            </View>
+          )}
           <View
             style={{
-              flexDirection: 'row', gap: 5, alignItems: 'center',
-            }}>
-            <Feather name="map-pin" size={18} color={'#003E9C'} />
-            <Text style={[styles.textType3, { color: '#003E9C',fontFamily: 'Circular Std Medium' }]}>
-              {item?.city}
-            </Text>
-          </View>
-          } 
-          <View style={{ borderBottomWidth: 2,
-              paddingBottom: 20, borderColor: Theme.lightGray,}}></View>
+              borderBottomWidth: 2,
+              paddingBottom: 20,
+              borderColor: Theme.lightGray,
+            }}></View>
           <View
             style={{
               paddingVertical: 20,
@@ -542,13 +562,26 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 8,
                 }}>
-                <AntDesign name="copy1" size={18} color={'#298CFF'} />
-                <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium',color:Theme.ironsidegrey1}]}>Subject</Text>
+                <AntDesign name="copy1" size={18} color={Theme.darkGray} />
+                <Text
+                  style={[
+                    styles.textType3,
+                    {
+                      fontFamily: 'Circular Std Medium',
+                      color: Theme.ironsidegrey1,
+                    },
+                  ]}>
+                  Subject
+                </Text>
               </View>
               <Text
                 style={[
                   styles.textType1,
-                  { fontSize: 20, textTransform: 'capitalize',fontFamily: 'Circular Std Bold' },
+                  {
+                    fontSize: 20,
+                    textTransform: 'capitalize',
+                    fontFamily: 'Circular Std Bold',
+                  },
                 ]}>
                 {item?.subject_name}
               </Text>
@@ -568,13 +601,26 @@ function JobTicket({ navigation, route }: any) {
                   gap: 10,
                 }}>
                 {/* <Image source={require('../../Assets/Images/preftutor.png')} /> */}
-                <FontAwesome name="user-o" size={18} color={'#298CFF'} />
-                <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium',color:Theme.ironsidegrey1}]}>Pref. Tutor</Text>
+                <FontAwesome name="user-o" size={18} color={Theme.darkGray} />
+                <Text
+                  style={[
+                    styles.textType3,
+                    {
+                      fontFamily: 'Circular Std Medium',
+                      color: Theme.ironsidegrey1,
+                    },
+                  ]}>
+                  Pref. Tutor
+                </Text>
               </View>
               <Text
                 style={[
                   styles.textType1,
-                  { fontSize: 20, textTransform: 'capitalize',fontFamily: 'Circular Std Bold' },
+                  {
+                    fontSize: 20,
+                    textTransform: 'capitalize',
+                    fontFamily: 'Circular Std Bold',
+                  },
                 ]}>
                 {item?.tutorPereference}
               </Text>
@@ -593,15 +639,28 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 14,
                 }}>
-                <FontAwesome name="level-up" size={18} color={'#298CFF'} />
-                <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium',color:Theme.ironsidegrey1}]}>Level</Text>
+                <FontAwesome name="level-up" size={18} color={Theme.darkGray} />
+                <Text
+                  style={[
+                    styles.textType3,
+                    {
+                      fontFamily: 'Circular Std Medium',
+                      color: Theme.ironsidegrey1,
+                    },
+                  ]}>
+                  Level
+                </Text>
               </View>
               <Text
                 style={[
                   styles.textType1,
-                  { fontSize: 20, textTransform: 'capitalize',fontFamily: 'Circular Std Bold' },
+                  {
+                    fontSize: 20,
+                    textTransform: 'capitalize',
+                    fontFamily: 'Circular Std Bold',
+                  },
                 ]}>
-                {item?.categoryName}
+                {item?.level}
               </Text>
             </View>
             <View
@@ -618,23 +677,36 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 6,
                 }}>
-                <Ionicons name="recording-sharp" size={18} color={'#298CFF'} />
-                <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium',color:Theme.ironsidegrey1}]}>Subscription </Text>
+               <Feather name="package" size={18} color={Theme.darkGray} />
+                <Text
+                  style={[
+                    styles.textType3,
+                    {
+                      fontFamily: 'Circular Std Medium',
+                      color: Theme.ironsidegrey1,
+                    },
+                  ]}>
+                  Package
+                </Text>
               </View>
               <Text
                 style={[
                   styles.textType1,
-                  { fontSize: 20, textTransform: 'capitalize',fontFamily: 'Circular Std Bold' },
+                  {
+                    fontSize: 20,
+                    textTransform: 'capitalize',
+                    fontFamily: 'Circular Std Bold',
+                  },
                 ]}>
-                {item?.subscription }
+                {item?.package}
               </Text>
             </View>
           </View>
 
-          <View style={{ flexDirection: 'row', gap: 10, marginTop: 15 }}>
+          <View style={{flexDirection: 'row', gap: 10, marginTop: 15}}>
             <View
               style={{
-                backgroundColor: '#E6F2FF',
+                backgroundColor: Theme.jobticketBG,
                 paddingVertical: 10,
                 borderRadius: 10,
               }}>
@@ -646,11 +718,15 @@ function JobTicket({ navigation, route }: any) {
                   gap: 10,
                   paddingHorizontal: 10,
                 }}>
-                <AntDesign name="calendar" size={20} color={'#298CFF'} />
+                <AntDesign name="calendar" size={20} color={Theme.darkGray} />
                 <Text
                   style={[
                     styles.textType3,
-                    { color: '#298CFF', textTransform: 'capitalize',fontFamily: 'Circular Std Medium' },
+                    {
+                      color: Theme.darkGray,
+                      textTransform: 'capitalize',
+                      fontFamily: 'Circular Std Medium',
+                    },
                   ]}>
                   {item?.classDayType}
                 </Text>
@@ -658,7 +734,7 @@ function JobTicket({ navigation, route }: any) {
             </View>
             <View
               style={{
-                backgroundColor: '#E6F2FF',
+                backgroundColor: Theme.jobticketBG,
                 paddingVertical: 10,
                 borderRadius: 10,
                 paddingHorizontal: 10,
@@ -670,8 +746,12 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 10,
                 }}>
-                <AntDesign name="clockcircleo" size={20} color={'#298CFF'} />
-                <Text style={[styles.textType3, { color: '#298CFF',fontFamily: 'Circular Std Medium' }]}>
+                <AntDesign name="clockcircleo" size={20} color={Theme.darkGray} />
+                <Text
+                  style={[
+                    styles.textType3,
+                    {color: Theme.darkGray, fontFamily: 'Circular Std Medium'},
+                  ]}>
                   {item?.classTime}
                 </Text>
               </View>
@@ -681,7 +761,7 @@ function JobTicket({ navigation, route }: any) {
       </>
     );
   };
-  const renderCloseData = ({ item }: any) => {
+  const renderCloseData = ({item}: any) => {
     return (
       <>
         <Text
@@ -709,14 +789,13 @@ function JobTicket({ navigation, route }: any) {
               width: 120,
               textAlign: 'center',
               textTransform: 'capitalize',
-              fontFamily: 'Circular Std Medium'
+              fontFamily: 'Circular Std Medium',
             },
-          ]}
-        >
+          ]}>
           {item.offer_status}
         </Text>
         <TouchableOpacity
-        onPress={() => navigation.navigate('AppliedDetails', item)}
+          onPress={() => navigation.navigate('AppliedDetails', item)}
           activeOpacity={0.8}
           style={{
             borderWidth: 1,
@@ -731,27 +810,24 @@ function JobTicket({ navigation, route }: any) {
               flexDirection: 'row',
               justifyContent: 'space-between',
               width: '100%',
-
-
             }}>
             <View>
-              <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium'}]}>{item?.jtuid}</Text>
               <Text
-                style={[
-                  styles.textType1,
-                  { lineHeight: 30, },
-                ]}>
+                style={[styles.textType3, {fontFamily: 'Circular Std Medium'}]}>
+                {item?.jtuid}
+              </Text>
+              <Text style={[styles.textType1, {lineHeight: 30}]}>
                 RM {item?.price}
               </Text>
-
             </View>
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{alignItems: 'center', justifyContent: 'center'}}>
               <Text
                 style={[
                   styles.textType3,
                   {
-                    color: item.mode == 'online'? Theme.darkGray : '#1FC07D',
-                    backgroundColor: item.mode == 'online'? '#298CFF33' : Theme.lightGreen,
+                    color: item.mode == 'online' ? Theme.darkGray : '#1FC07D',
+                    backgroundColor:
+                      item.mode == 'online' ? '#298CFF33' : Theme.lightGreen,
                     fontFamily: 'Circular Std Medium',
                     paddingVertical: 5,
                     paddingHorizontal: 30,
@@ -763,23 +839,33 @@ function JobTicket({ navigation, route }: any) {
               </Text>
             </View>
           </View>
-          {item?.mode.toLowerCase() == 'physical' &&
+          {item?.mode.toLowerCase() == 'physical' && (
+            <View
+              style={{
+                flexDirection: 'row',
+                gap: 10,
+                alignItems: 'center',
+              }}>
+              <Feather name="map-pin" size={18} color={Theme.darkGray} />
+              <Text
+                style={[
+                  styles.textType3,
+                  {
+                    color: '#003E9C',
+                    textTransform: 'capitalize',
+                    fontFamily: 'Circular Std Medium',
+                  },
+                ]}>
+                {item?.city}
+              </Text>
+            </View>
+          )}
           <View
             style={{
-              flexDirection: 'row', gap: 10, alignItems: 'center', 
-            }}>
-            <Feather name="map-pin" size={18} color={'#298CFF'} />
-            <Text
-              style={[
-                styles.textType3,
-                { color: '#003E9C', textTransform: 'capitalize',fontFamily: 'Circular Std Medium' },
-              ]}>
-              {item?.city}
-            </Text>
-          </View>
-           }
-          <View style={{ borderBottomWidth: 2,
-              paddingBottom: 20, borderColor: Theme.lightGray,}}></View>
+              borderBottomWidth: 2,
+              paddingBottom: 20,
+              borderColor: Theme.lightGray,
+            }}></View>
           <View
             style={{
               paddingVertical: 20,
@@ -799,13 +885,26 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 10,
                 }}>
-                <AntDesign name="copy1" size={18} color={'#298CFF'} />
-                <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium',color:Theme.ironsidegrey1}]}>Subject</Text>
+                <AntDesign name="copy1" size={18} color={Theme.darkGray} />
+                <Text
+                  style={[
+                    styles.textType3,
+                    {
+                      fontFamily: 'Circular Std Medium',
+                      color: Theme.ironsidegrey1,
+                    },
+                  ]}>
+                  Subject
+                </Text>
               </View>
               <Text
                 style={[
                   styles.textType1,
-                  { fontSize: 20, textTransform: 'capitalize',fontFamily: 'Circular Std Bold' },
+                  {
+                    fontSize: 20,
+                    textTransform: 'capitalize',
+                    fontFamily: 'Circular Std Bold',
+                  },
                 ]}>
                 {item?.subject_name}
               </Text>
@@ -824,13 +923,26 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 10,
                 }}>
-                <FontAwesome name="user-o" size={18} color={'#298CFF'} />
-                <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium',color:Theme.ironsidegrey1}]}>Pref. Tutor</Text>
+                <FontAwesome name="user-o" size={18} color={Theme.darkGray} />
+                <Text
+                  style={[
+                    styles.textType3,
+                    {
+                      fontFamily: 'Circular Std Medium',
+                      color: Theme.ironsidegrey1,
+                    },
+                  ]}>
+                  Pref. Tutor
+                </Text>
               </View>
               <Text
                 style={[
                   styles.textType1,
-                  { fontSize: 20, textTransform: 'capitalize',fontFamily: 'Circular Std Medium' },
+                  {
+                    fontSize: 20,
+                    textTransform: 'capitalize',
+                    fontFamily: 'Circular Std Medium',
+                  },
                 ]}>
                 {item?.tutorPereference}
               </Text>
@@ -849,15 +961,28 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 14,
                 }}>
-                <FontAwesome name="level-up" size={18} color={'#298CFF'} />
-                <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium',color:Theme.ironsidegrey1}]}>Level</Text>
+                <FontAwesome name="level-up" size={18} color={Theme.darkGray} />
+                <Text
+                  style={[
+                    styles.textType3,
+                    {
+                      fontFamily: 'Circular Std Medium',
+                      color: Theme.ironsidegrey1,
+                    },
+                  ]}>
+                  Level
+                </Text>
               </View>
               <Text
                 style={[
                   styles.textType1,
-                  { fontSize: 20, textTransform: 'capitalize',fontFamily: 'Circular Std Medium' },
+                  {
+                    fontSize: 20,
+                    textTransform: 'capitalize',
+                    fontFamily: 'Circular Std Medium',
+                  },
                 ]}>
-                {item?.categoryName}
+                {item?.level}
               </Text>
             </View>
             <View
@@ -874,23 +999,36 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 6,
                 }}>
-                <Ionicons name="recording-sharp" size={18} color={'#298CFF'} />
-                <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium',color:Theme.ironsidegrey1}]}>Subscription </Text>
+                <Feather name="package" size={18} color={Theme.darkGray} />
+                <Text
+                  style={[
+                    styles.textType3,
+                    {
+                      fontFamily: 'Circular Std Medium',
+                      color: Theme.ironsidegrey1,
+                    },
+                  ]}>
+                  Package{' '}
+                </Text>
               </View>
               <Text
                 style={[
                   styles.textType1,
-                  { fontSize: 20, textTransform: 'capitalize',fontFamily: 'Circular Std Bold' },
+                  {
+                    fontSize: 20,
+                    textTransform: 'capitalize',
+                    fontFamily: 'Circular Std Bold',
+                  },
                 ]}>
-                {item?.subscription }
+                {item?.package}
               </Text>
             </View>
           </View>
 
-          <View style={{ flexDirection: 'row', gap: 10, marginTop: 15 }}>
+          <View style={{flexDirection: 'row', gap: 10, marginTop: 15}}>
             <View
               style={{
-                backgroundColor: '#E6F2FF',
+                backgroundColor: Theme.jobticketBG,
                 paddingVertical: 10,
                 borderRadius: 10,
               }}>
@@ -902,11 +1040,15 @@ function JobTicket({ navigation, route }: any) {
                   gap: 10,
                   paddingHorizontal: 10,
                 }}>
-                <AntDesign name="calendar" size={20} color={'#298CFF'} />
+                <AntDesign name="calendar" size={20} color={Theme.darkGray} />
                 <Text
                   style={[
                     styles.textType3,
-                    { color: '#298CFF', textTransform: 'capitalize',fontFamily: 'Circular Std Medium' },
+                    {
+                      color: Theme.darkGray,
+                      textTransform: 'capitalize',
+                      fontFamily: 'Circular Std Medium',
+                    },
                   ]}>
                   {item?.classDayType}
                 </Text>
@@ -914,7 +1056,7 @@ function JobTicket({ navigation, route }: any) {
             </View>
             <View
               style={{
-                backgroundColor: '#E6F2FF',
+                backgroundColor: Theme.jobticketBG,
                 paddingVertical: 10,
                 borderRadius: 10,
                 paddingHorizontal: 10,
@@ -926,11 +1068,15 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 10,
                 }}>
-                <AntDesign name="clockcircleo" size={20} color={'#298CFF'} />
+                <AntDesign name="clockcircleo" size={20} color={Theme.darkGray} />
                 <Text
                   style={[
                     styles.textType3,
-                    { color: '#298CFF', textTransform: 'capitalize',fontFamily: 'Circular Std Medium' },
+                    {
+                      color: Theme.darkGray,
+                      textTransform: 'capitalize',
+                      fontFamily: 'Circular Std Medium',
+                    },
                   ]}>
                   {item?.classTime}
                 </Text>
@@ -944,9 +1090,9 @@ function JobTicket({ navigation, route }: any) {
 
   const firstRoute = useCallback(() => {
     return (
-      <View style={{ marginVertical: 20, marginBottom: 10 }}>
+      <View style={{marginVertical: 20, marginBottom: 10}}>
         {/* Search */}
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
           <View
             style={{
               width: '100%',
@@ -963,7 +1109,7 @@ function JobTicket({ navigation, route }: any) {
             <TouchableOpacity onPress={() => navigation}>
               <Image
                 source={require('../../Assets/Images/search.png')}
-                style={{ width: 15, height: 15 }}
+                style={{width: 15, height: 15}}
               />
             </TouchableOpacity>
             <TextInput
@@ -983,20 +1129,19 @@ function JobTicket({ navigation, route }: any) {
 
         {openData.length > 0 ? (
           <View>
-
-          <FlatList
-            data={searchText && foundName.length > 0 ? foundName : openData}
-            renderItem={renderOpenData}
-            scrollEnabled={true}
-            nestedScrollEnabled={true}
-            keyExtractor={(items: any, index: number): any => index}
+            <FlatList
+              data={searchText && foundName.length > 0 ? foundName : openData}
+              renderItem={renderOpenData}
+              scrollEnabled={true}
+              nestedScrollEnabled={true}
+              keyExtractor={(items: any, index: number): any => index}
             />
-            </View>
+          </View>
         ) : (
-          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
             <Image
               source={require('../../Assets/Images/nojobticketavailable.png')}
-              style={{ width: 300, height: 300 }}
+              style={{width: 300, height: 300}}
             />
           </View>
         )}
@@ -1006,9 +1151,9 @@ function JobTicket({ navigation, route }: any) {
 
   const secondRoute = useCallback(() => {
     return (
-      <View style={{ marginVertical: 20, marginBottom: 10 }}>
+      <View style={{marginVertical: 20, marginBottom: 10}}>
         {/* Search */}
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
           <View
             style={{
               width: '100%',
@@ -1025,41 +1170,32 @@ function JobTicket({ navigation, route }: any) {
               placeholder="Search"
               placeholderTextColor="black"
               onChangeText={e => searchApplied(e)}
-              style={{ width: '90%', padding: 8, color: 'black' }}
+              style={{width: '90%', padding: 8, color: 'black'}}
             />
             <TouchableOpacity onPress={() => navigation}>
               <Image
                 source={require('../../Assets/Images/search.png')}
-                style={{ width: 20, height: 20 }}
+                style={{width: 20, height: 20}}
               />
             </TouchableOpacity>
           </View>
         </View>
         {appliedData && appliedData.length > 0 ? (
           <View>
-
-          <FlatList
-            data={searchText && foundName.length > 0 ? foundName : appliedData}
-            renderItem={renderCloseData}
-            nestedScrollEnabled={true}
-            keyExtractor={(items: any, index: number): any => index}
+            <FlatList
+              data={
+                searchText && foundName.length > 0 ? foundName : appliedData
+              }
+              renderItem={renderCloseData}
+              nestedScrollEnabled={true}
+              keyExtractor={(items: any, index: number): any => index}
             />
-            </View>
+          </View>
         ) : (
-          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-            {/* <Text
-              style={{
-                fontWeight: 'bold',
-                fontSize: 16,
-                color: Theme.black,
-                textAlign: 'center',
-              }}>
-              No Data Found
-            </Text> */}
-
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
             <Image
               source={require('../../Assets/Images/nojobavailable.png')}
-              style={{ width: 300, height: 300 }}
+              style={{width: 300, height: 300}}
             />
           </View>
         )}
@@ -1072,7 +1208,7 @@ function JobTicket({ navigation, route }: any) {
     setOpenPPModal(true);
     axios
       .get(`${Base_Uri}api/bannerAds`)
-      .then(({ data }) => { })
+      .then(({data}) => {})
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
@@ -1109,7 +1245,7 @@ function JobTicket({ navigation, route }: any) {
 
   const closeBannerModal = async () => {
     if (jobTicketBanner.displayOnce == 'on') {
-      let bannerData = { ...jobTicketBanner };
+      let bannerData = {...jobTicketBanner};
 
       let stringData = JSON.stringify(bannerData);
 
@@ -1122,12 +1258,7 @@ function JobTicket({ navigation, route }: any) {
   };
 
   return (
-    // <View  style={{ flex: 1, justifyContent: 'center', alignItems: 'center',backgroundColor:"transparent" }}>
-    //   {/* <ActivityIndicator size={'large'} color={'black'}  /> */}
-    //   <Image source={require('../../Assets/Images/loader.gif')}/>
-    // </View>
-
-    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+    <View style={{backgroundColor: Theme.white, height: '100%'}}>
       <Header
         tab={currentTab}
         title="Job Ticket"
@@ -1141,21 +1272,23 @@ function JobTicket({ navigation, route }: any) {
         }
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled>
-        <View style={{ paddingHorizontal: 15, marginTop: 20 }}>
+        <View style={{paddingHorizontal: 15, marginTop: 20}}>
           <CustomTabView
             currentTab={currentTab}
             firstRoute={firstRoute}
             secondRoute={secondRoute}
             activateTab={activateTab}
             firstRouteTitle="Latest"
-            secondRouteTitle={`Applied (${appliedData.length ? appliedData.length : 0})`}
+            secondRouteTitle={`Applied (${
+              appliedData.length ? appliedData.length : 0
+            })`}
           />
         </View>
       </ScrollView>
       {Object.keys(jobTicketBanner).length > 0 &&
         (jobTicketBanner.tutorStatusCriteria == 'All' ||
           tutorDetails.status.toLowerCase() == 'verified') && (
-          <View style={{ flex: 1 }}>
+          <View style={{flex: 1}}>
             <Modal
               visible={openPPModal}
               animationType="fade"
@@ -1172,7 +1305,6 @@ function JobTicket({ navigation, route }: any) {
                 <View
                   style={{
                     backgroundColor: 'white',
-                    // padding: 15,
                     borderRadius: 5,
                     marginHorizontal: 20,
                   }}>
@@ -1190,9 +1322,9 @@ function JobTicket({ navigation, route }: any) {
                       />
                     </View>
                   </TouchableOpacity>
-                  {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
+
                   <Image
-                    source={{ uri: jobTicketBanner.bannerImages }}
+                    source={{uri: jobTicketBanner.bannerImages}}
                     style={{
                       width: Dimensions.get('screen').width / 1.05,
                       height: '90%',
@@ -1204,81 +1336,11 @@ function JobTicket({ navigation, route }: any) {
             </Modal>
           </View>
         )}
-      {/* <Modal visible={modalVisible} animationType="fade" transparent={true}>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            backgroundColor: 'rgba(0,0,0,0.5)',
-          }}>
-          <View
-            style={[
-              styles.modalContainer,
-              { padding: 30, marginHorizontal: 40 },
-            ]}>
-            <Text
-              style={{
-                color: Theme.darkGray,
-                fontSize: 16,
-                fontWeight: 'bold',
-                fontFamily: 'Circular Std Medium',
-                lineHeight: 30,
-              }}>
-              You have been Verified!
-            </Text>
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                gap: 10,
-                marginTop: 20,
-                marginBottom: 20,
-              }}>
-              <TouchableOpacity
-                onPress={() => HandelGoToDashboard()}
-                activeOpacity={0.8}
-                style={{
-                  borderWidth: 1,
-                  paddingVertical: 10,
-                  borderRadius: 10,
-                  borderColor: Theme.lightGray,
-                  alignItems: 'center',
-                  width: '90%',
-                  backgroundColor: Theme.darkGray,
-                }}>
-                <Text
-                  style={{
-                    color: 'white',
-                    fontSize: 14,
-                    fontFamily: 'Circular Std Medium',
-                  }}>
-                  Go To Dashboard
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal> */}
       <BackToDashboard
         modalVisible={modalVisible}
         handleGoToDashboard={() => HandelGoToDashboard()}
       />
       <CustomLoader visible={loading} />
-      {/* <Modal visible={loading} animationType="fade" transparent={true}>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'rgba(0,0,0,0.5)',
-          }}>
-          <Image
-            source={require('../../Assets/Images/SIFU.gif')}
-            style={{ width: 150, height: 150 }}
-          />
-        </View>
-      </Modal> */}
     </View>
   );
 }

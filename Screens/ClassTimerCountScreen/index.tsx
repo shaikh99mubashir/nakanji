@@ -12,6 +12,7 @@ import { useIsFocused } from "@react-navigation/native"
 import moment from "moment"
 import CustomLoader from "../../Component/CustomLoader"
 import messaging from '@react-native-firebase/messaging';
+import TimmerSVG from "../../SVGs/TimmerSVG"
 
 
 function ClassTimerCount({ navigation, route }: any) {
@@ -326,6 +327,7 @@ function ClassTimerCount({ navigation, route }: any) {
 
             <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, }}>
                 <Image source={require('../../Assets/Images/Timmmer1.png')} resizeMode="contain" style={{ width: 350, height: 350 }} />
+                {/* <TimmerSVG/> */}
                 <View style={{ alignItems: 'center', position: 'absolute', top: '45%', left: '34%', justifyContent: 'center' }}>
                     <>
                         <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center' }} onPress={() => handleClockOut()} activeOpacity={0.8} >

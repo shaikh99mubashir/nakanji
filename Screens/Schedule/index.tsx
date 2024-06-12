@@ -630,19 +630,19 @@ function Schedule({navigation, route}: any) {
                   ]}>
                   {item?.studentName}
                 </Text>
-                {item?.mode.toLowerCase() == 'physical' && (
+                {item?.mode?.toLowerCase() == 'physical' && (
                   <View
                     style={{
                       flexDirection: 'row',
                       gap: 5,
                       alignItems: 'center',
                     }}>
-                    <Feather name="map-pin" size={16} color={'#003E9C'} />
+                    <Feather name="map-pin" size={16} color={Theme.darkGray} />
                     <Text
                       style={[
                         styles.textType3,
                         {
-                          color: '#003E9C',
+                          color: Theme.darkGray,
                           fontFamily: 'Circular Std Medium',
                           fontSize: 16,
                         },
@@ -660,7 +660,7 @@ function Schedule({navigation, route}: any) {
                   {
                     color: item.mode == 'online' ? Theme.darkGray : '#1FC07D',
                     backgroundColor:
-                      item.mode == 'online' ? '#298CFF33' : Theme.lightGreen,
+                      item.mode == 'online' ? Theme.lightGreen : Theme.lightGreen,
                     textTransform: 'capitalize',
                     width:90,
                     height:25,
@@ -689,7 +689,7 @@ function Schedule({navigation, route}: any) {
                 flexDirection: 'row',
                 gap: 10,
               }}>
-              <AntDesig name="copy1" size={20} color={'#298CFF'} />
+              <AntDesig name="copy1" size={20} color={Theme.darkGray} />
               <Text style={[styles.textType3, {color: Theme.ironsidegrey1}]}>
                 Subject
               </Text>
@@ -713,7 +713,7 @@ function Schedule({navigation, route}: any) {
                 flexDirection: 'row',
                 gap: 10,
               }}>
-              <AntDesig name="carryout" size={20} color={'#298CFF'} />
+              <AntDesig name="carryout" size={20} color={Theme.darkGray} />
               <Text style={[styles.textType3, {color: Theme.ironsidegrey1}]}>
                 Day
               </Text>
@@ -736,7 +736,7 @@ function Schedule({navigation, route}: any) {
                 flexDirection: 'row',
                 gap: 10,
               }}>
-              <AntDesig name="clockcircleo" size={20} color={'#298CFF'} />
+              <AntDesig name="clockcircleo" size={20} color={Theme.darkGray} />
               <Text style={[styles.textType3, {color: Theme.ironsidegrey1}]}>
                 Time
               </Text>
@@ -760,7 +760,7 @@ function Schedule({navigation, route}: any) {
                 gap: 10,
               }}>
               {/* <Image source={require('../../Assets/Images/level.png')} /> */}
-              <MaterialIcons name="schedule-send" size={20} color={'#298CFF'} />
+              <MaterialIcons name="schedule-send" size={20} color={Theme.darkGray} />
               <Text style={[styles.textType3, {color: Theme.ironsidegrey1}]}>
                 Status
               </Text>

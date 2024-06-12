@@ -129,6 +129,18 @@ const Signup = ({ navigation, route }: any) => {
       .catch((error: any) => {
         setLoading(false);
         console.log("error", error);
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          console.log('Server responded with data:', error.response.data);
+          console.log('Status code:', error.response.status);
+          console.log('Headers:', error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.log('No response received:', error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error setting up the request:', error.message);
+        }
 
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
@@ -407,7 +419,7 @@ const Signup = ({ navigation, route }: any) => {
               onPress={() => setRememberMe(!rememberMe)}>
               {rememberMe ? (
                 <Icon
-                  name="md-checkmark-sharp"
+                  name="checkmark-sharp"
                   size={15}
                   color="white"
                   style={{ backgroundColor: Theme.darkGray }}
@@ -431,7 +443,7 @@ export default Signup;
 
 const styles = StyleSheet.create({
   container: {
-    autoFocus: true,
+    // autoFocus: true,
     // flex: 1,
     marginTop: 20,
   },
@@ -444,7 +456,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     color: '#E5E5E5',
     flexShrink: 22,
-    autoFocus: true,
+    // autoFocus: true,
   },
   textType1: {
     fontWeight: '500',

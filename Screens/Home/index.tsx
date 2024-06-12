@@ -34,6 +34,10 @@ import messaging from '@react-native-firebase/messaging';
 import scheduleNotificationContext from '../../context/scheduleNotificationContext';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomLoader from '../../Component/CustomLoader';
+import Money from '../../SVGs/Money';
+import Student from '../../SVGs/Student';
+import Clock from '../../SVGs/Clock';
+import Schedule from '../../SVGs/Schedule';
 function Home({ navigation, route }: any) {
   let key = route.key;
 
@@ -252,13 +256,13 @@ function Home({ navigation, route }: any) {
     });
   }
 
-  useEffect(() => {
-    requestPermission();
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      DisplayNotification(remoteMessage);
-    });
-    return unsubscribe;
-  }, [focus]);
+  // useEffect(() => {
+  //   requestPermission();
+  //   const unsubscribe = messaging().onMessage(async remoteMessage => {
+  //     DisplayNotification(remoteMessage);
+  //   });
+  //   return unsubscribe;
+  // }, [focus]);
 
 
   
@@ -646,6 +650,7 @@ function Home({ navigation, route }: any) {
     navigation.navigate('Schedule');
   };
   const [openPPModal, setOpenPPModal] = useState(false);
+
   const displayBanner = async () => {
     setOpenPPModal(true);
     axios
@@ -1191,11 +1196,12 @@ function Home({ navigation, route }: any) {
                       justifyContent: 'space-between',
                       marginVertical: 15,
                     }}>
-                    <Image
+                    {/* <Image
                       source={require('../../Assets/Images/money.png')}
                       resizeMode="contain"
                       style={{ marginTop: 5 }}
-                    />
+                    /> */}
+                    <Money/>
                     <Image
                       source={require('../../Assets/Images/DiagonalRightUparrow.png')}
                       resizeMode="contain"
@@ -1259,10 +1265,11 @@ function Home({ navigation, route }: any) {
                       ]}>
                       {students?.length ? students?.length : '0'}
                     </Text>
-                    <Image
+                    {/* <Image
                       source={require('../../Assets/Images/studenticonCopy.png')}
                       resizeMode="contain"
-                    />
+                    /> */}
+                    <Student/>
                   </View>
                 </View>
               </View>
@@ -1282,10 +1289,11 @@ function Home({ navigation, route }: any) {
                       justifyContent: 'space-between',
                       marginVertical: 20,
                     }}>
-                    <Image
+                    {/* <Image
                       source={require('../../Assets/Images/ClockiconCopy.png')}
                       resizeMode="contain"
-                    />
+                    /> */}
+                    <Clock/>
                     <Image
                       source={require('../../Assets/Images/DiagonalRightUparrowblack.png')}
                       resizeMode="contain"
@@ -1318,10 +1326,7 @@ function Home({ navigation, route }: any) {
                       justifyContent: 'space-between',
                       marginVertical: 16,
                     }}>
-                    <Image
-                      source={require('../../Assets/Images/ScheduleIcon.png')}
-                      resizeMode="contain"
-                    />
+                    <Schedule/>
                     <Image
                       source={require('../../Assets/Images/DiagonalRightUparrowblack.png')}
                       resizeMode="contain"

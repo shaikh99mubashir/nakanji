@@ -1,5 +1,6 @@
 import { Image, Modal, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import AltLogo from '../../SVGs/AltLogo'
 
 const CustomLoader = ({ visible}:any) => {
   return (
@@ -10,11 +11,13 @@ const CustomLoader = ({ visible}:any) => {
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'rgba(0,0,0,0.9)',
+        paddingHorizontal:20
       }}>
-      <Image
+      {/* <Image
         source={require('../../Assets/Images/SIFU.gif')}
         style={{ width: 150, height: 150 }}
-      />
+      /> */}
+      <AltLogo/>
     </View>
   </Modal>
   )

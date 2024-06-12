@@ -8,11 +8,10 @@ import {
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
 import {Base_Uri} from '../../constant/BaseUri';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
-import messaging from '@react-native-firebase/messaging';
+import PrimaryLogo from '../../SVGs/PrimaryLogo';
 const Splash = ({navigation}: any) => {
   const tutorDetailsCont = useContext(TutorDetailsContext);
   const {tutorDetails, setTutorDetail} = tutorDetailsCont;
@@ -82,34 +81,6 @@ const Splash = ({navigation}: any) => {
               );
               return;
             }
-            // if (
-            //   !tutorData.tutorDetailById[0]?.full_name &&
-            //   !tutorData.tutorDetailById[0]?.displayName
-            // ) {
-            //   navigation.reset({
-            //     index: 0,
-            //     routes: [
-            //       {
-            //         name: 'TutorDetails',
-            //         params: {
-            //           tutorData,
-            //         },
-            //       },
-            //     ],
-            //   });
-            // } else {
-            //   navigation.reset({
-            //     index: 0,
-            //     routes: [
-            //       {
-            //         name: 'Main',
-            //         params: {
-            //           data,
-            //         },
-            //       },
-            //     ],
-            //   });
-            // }
           })
           .catch(error => {
             console.log('error', error);
@@ -152,11 +123,12 @@ const Splash = ({navigation}: any) => {
         paddingHorizontal: 15,
         alignItems: 'center',
       }}>
-      <Image
+      {/* <Image
         source={require('../../Assets/Images/logo.png')}
         resizeMode="contain"
         style={styles.logo}
-      />
+      /> */}
+      <PrimaryLogo/>
     </View>
   );
 };

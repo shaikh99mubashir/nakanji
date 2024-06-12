@@ -26,21 +26,18 @@ const Login = ({ navigation }: any) => {
     }
     setLoading(true);
 
-    const timeoutId = setTimeout(() => {
-      setLoading(false);
-      ToastAndroid.show('Request timeout: Please check your internet connection', ToastAndroid.SHORT);
-    }, 30000);
+    // const timeoutId = setTimeout(() => {
+    //   setLoading(false);
+    //   ToastAndroid.show('Request timeout: Please check your internet connection', ToastAndroid.SHORT);
+    // }, 60000);
     // const phoneNumberWithCountryCode = "+60" + phoneNumber;
     const phoneNumberWithCountryCode =  phoneNumber;
     console.log("phoneNumberWithCountryCode",phoneNumberWithCountryCode);
     
     axios
-      .get(`${Base_Uri}loginAPI/${phoneNumberWithCountryCode}`,{
-          // Set the timeout for the API call
-      timeout: 30000, // 30 seconds
-      })
+      .get(`${Base_Uri}loginAPI/${phoneNumberWithCountryCode}`)
       .then(({ data }) => {
-        clearTimeout(timeoutId);
+        // clearTimeout(timeoutId);
         if (data?.status == 404) {
           setLoading(false);
           console.log(data.status);
@@ -62,6 +59,19 @@ const Login = ({ navigation }: any) => {
         setLoading(false);
         console.log("error", error);
         ToastAndroid.show('Request timeout: Please check your internet connection', ToastAndroid.LONG);
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          console.log('Server responded with data:', error.response.data);
+          console.log('Status code:', error.response.status);
+          console.log('Headers:', error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.log('No response received:', error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error setting up the request:', error.message);
+        }
+      
       });
   };
 
@@ -147,26 +157,6 @@ const Login = ({ navigation }: any) => {
             </Text>
           )}
         </TouchableOpacity>
-        {/* <View
-          style={{
-            width: '100%',
-            alignItems: 'center',
-            padding: 10,
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}>
-          <Text
-            style={{
-              color: Theme.black,
-              fontSize: 14,
-              fontWeight: '400',
-            }}>
-            Don't have an account?{' '}
-          </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-            <Text style={{ color: Theme.black, fontWeight: 'bold' }}>Signup</Text>
-          </TouchableOpacity>
-        </View> */}
       </View>
     </View>
   );
@@ -176,7 +166,7 @@ export default Login;
 
 const styles = StyleSheet.create({
   container: {
-    autoFocus: true,
+    // autoFocus: true,
     // flex: 1,
     marginTop: 20,
   },
@@ -189,7 +179,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     color: '#E5E5E5',
     flexShrink: 22,
-    autoFocus: true,
+    // autoFocus: true,
   },
   textType1: {
     fontWeight: '500', fontSize: 24, color: Theme.Dune, fontFamily: 'Circular Std Book', lineHeight: 24,
