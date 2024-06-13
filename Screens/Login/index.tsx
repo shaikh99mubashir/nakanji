@@ -26,10 +26,10 @@ const Login = ({ navigation }: any) => {
     }
     setLoading(true);
 
-    // const timeoutId = setTimeout(() => {
-    //   setLoading(false);
-    //   ToastAndroid.show('Request timeout: Please check your internet connection', ToastAndroid.SHORT);
-    // }, 60000);
+    const timeoutId = setTimeout(() => {
+      setLoading(false);
+      ToastAndroid.show('Request timeout: Please check your internet connection', ToastAndroid.SHORT);
+    }, 60000);
     // const phoneNumberWithCountryCode = "+60" + phoneNumber;
     const phoneNumberWithCountryCode =  phoneNumber;
     console.log("phoneNumberWithCountryCode",phoneNumberWithCountryCode);
@@ -37,7 +37,7 @@ const Login = ({ navigation }: any) => {
     axios
       .get(`${Base_Uri}loginAPI/${phoneNumberWithCountryCode}`)
       .then(({ data }) => {
-        // clearTimeout(timeoutId);
+        clearTimeout(timeoutId);
         if (data?.status == 404) {
           setLoading(false);
           console.log(data.status);
@@ -58,7 +58,7 @@ const Login = ({ navigation }: any) => {
       .catch(error => {
         setLoading(false);
         console.log("error", error);
-        ToastAndroid.show('Request timeout: Please check your internet connection', ToastAndroid.LONG);
+        ToastAndroid.show(`${error}Request timeout: Please check your internet connection`, ToastAndroid.LONG);
         if (error.response) {
           // The request was made and the server responded with a status code
           console.log('Server responded with data:', error.response.data);
@@ -71,7 +71,6 @@ const Login = ({ navigation }: any) => {
           // Something happened in setting up the request that triggered an Error
           console.log('Error setting up the request:', error.message);
         }
-      
       });
   };
 

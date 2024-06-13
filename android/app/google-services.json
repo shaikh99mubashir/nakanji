@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "472385751189",
+    "project_id": "nakanji-61875",
+    "storage_bucket": "nakanji-61875.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:472385751189:android:70cfac40ae4bebf6acf39c",
+        "android_client_info": {
+          "package_name": "com.nakanji"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMn5xD3MxKadcgQF84CAhqJk7TjZdZKio"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

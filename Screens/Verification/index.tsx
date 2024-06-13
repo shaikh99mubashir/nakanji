@@ -65,7 +65,7 @@ const Verification = ({ navigation, route }: any) => {
                 })
                 .then(res => {
                   let data = res.data;
-                  // console.log(data, 'tokenResponse');
+                  console.log(data, 'tokenResponse');
                 })
                 .catch(error => {
                   console.log(error, 'error');
@@ -121,7 +121,7 @@ const Verification = ({ navigation, route }: any) => {
           AsyncStorage.setItem('loginAuth', mydata);
           console.log('mydata',mydata);
           
-          // sendDeviceTokenToDatabase(data.tutorID)
+          sendDeviceTokenToDatabase(data.tutorID)
           console.log('data.tutorID',data.tutorID);
           
           axios

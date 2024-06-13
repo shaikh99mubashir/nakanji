@@ -194,24 +194,24 @@ const ReportSubmission = ({navigation, route}: any): any => {
   ];
   const attitudeOption = [
     {
-      option: 'The student is able to recite Quranic verses accurately.',
+      option: 'Rarely absent, consistently on time.',
     },
     {
-      option: 'The student is able to recite Quranic verses that are mostly accurate but with minimal mistakes.',
+      option: 'Sometimes absent or late, but with reasonable excuses.',
     },
     {
-      option: ' The student struggles to recite Quranic verses accurately.',
+      option: 'Regularly absent or late, significantly impacts participation.',
     },
   ];
   const attitudeOption2 = [
     {
-      option: 'The students are able to apply what they learned well in their daily lives and show they understand it.',
+      option: 'Communication is very effective and frequent.',
     },
     {
-      option: "The student is able to apply what they learned sometimes in daily life but doesn't use it consistently.",
+      option: 'Communication is adequate but could be more effective.',
     },
     {
-      option: "The student struggles to use what they learned in daily life and shows they don't understand it.",
+      option: 'Communication is minimal or ineffective.',
     },
   ];
   const attitudeOption3 = [
@@ -380,51 +380,51 @@ const ReportSubmission = ({navigation, route}: any): any => {
   ];
   const CT = [
     {
-      option: 'The students are able to apply what they learned well in their daily lives and show they understand it.',
+      option: 'Solves many different questions correctly on their own.',
     },
     {
-      option: "The student is able to apply what they learned sometimes in daily life but doesn't use it consistently.",
+      option: ' Solves most questions correctly with little guidance.',
     },
     {
-      option: "The student struggles to use what they learned in daily life and shows they don't understand it.",
+      option: 'Answers some questions correctly but needs a lot of guidance.',
     },
   ];
   const Observation = [
     {
-      option: 'Students learn best using images and diagrams.',
+      option: 'Visual: Learns with images and diagrams.',
     },
     {
-      option: 'Students learn best by listening and receiving verbal instruction.',
+      option: 'Auditory: Listening and verbal instruction.',
     },
     {
-      option: 'Students learn best by reading and writing notes.',
+      option: 'Reading/Writing: Reading and writing notes.',
     },
     {
-      option: ' Students learn best with a combination of styles, such as using images, listening, and writing notes.',
+      option: 'Multimodal: Learns best with a combination of styles.',
     },
   ];
   const CT2 = [
     {
       option:
-        'The students are able to apply what they learned well in their daily lives and show they understand it.',
+        'Able to answer questions using many different methods and concepts. ',
     },
     {
-      option: "The student is able to apply what they learned sometimes in daily life but doesn't use it consistently.",
+      option: 'Able to use various methods and concepts, but not frequently. ',
     },
     {
       option:
-        "The student struggles to use what they learned in daily life and shows they don't understand it.",
+        'Finds it hard to use different methods and concepts to answer questions.',
     },
   ];
   const understanding = [
     {
-      option: ' The student is able to explain concepts clearly and accurately.',
+      option: 'Explains concepts clearly and accurately.',
     },
     {
-      option: 'The student is able to explain basic concepts clearly, but with a few errors.',
+      option: 'Explains basic concepts clearly but with a few errors.',
     },
     {
-      option: 'The student struggles to explain basic concepts and makes many mistakes.',
+      option: ' Struggles to explain concepts and makes many mistakes.',
     },
   ];
   const understanding2 = [
@@ -440,16 +440,15 @@ const ReportSubmission = ({navigation, route}: any): any => {
   ];
   const knowledge = [
     {
-      option: 'The student was able to remember most of the basic concepts of the topic with minimal errors.',
+      option: ' Remember most concepts with minimal errors.',
     },
     {
-      option: 'The student can remember the basic concepts of the topic but needs some guidance.',
+      option: 'Remember basic concepts after receiving guidance. ',
     },
     {
-      option: 'The student is having difficulty remembering the basic topics of the topic without a lot of guidance.',
+      option: 'Struggles to remember concepts without a lot of help.',
     },
   ];
-
   const knowledge2 = [
     {
       option: 'Able to share their ideas clearly and actively.',
@@ -1074,13 +1073,13 @@ const ReportSubmission = ({navigation, route}: any): any => {
                 option={knowledge}
                 modalHeading="Knowledge"
               />
-              {/* <DropDownModalView
+              <DropDownModalView
                 selectedValue={setKnowledgeAnswer2}
                 subTitle="How well does the student share their ideas on the topics under discussion?"
                 placeHolder="Select Answer"
                 option={knowledge2}
                 modalHeading="Knowledge"
-              /> */}
+              />
             </>
           )}
           {/* Performance */}
@@ -1165,29 +1164,29 @@ const ReportSubmission = ({navigation, route}: any): any => {
           ) : (
             <>
               <DropDownModalView
-                title="B. UNDERSTANDING"
+                title="B. Performance"
                 selectedValue={setUnderstandingAnswer}
                 subTitle="How well does the student explain the basic concepts?"
                 placeHolder="Select Answer"
                 option={understanding}
                 modalHeading="Understanding"
               />
-              {/* <DropDownModalView
+              <DropDownModalView
                 selectedValue={setUnderstandingAnswer2}
                 subTitle="How well does the student apply learned concepts to solve problems or answer questions?"
                 placeHolder="Select Answer"
                 option={understanding2}
                 modalHeading="Understanding"
-              /> */}
+              />
             </>
           )}
-          {/* Application */}
+          {/* CRITICAL THINKING */}
           {evaluation.option == 'Progress Report' ? (
             <>
               <DropDownModalView
-                title="C. APPLICATION"
+                title="C. ATTITUDE"
                 selectedValue={setattQ1}
-                subTitle="How is the student able to recite Quranic verses with accurate pronunciation, vowels, punctuation, and tajweed?"
+                subTitle="How well student’s attendance for 3 months?"
                 placeHolder="Select Answer"
                 option={attitudeOption}
                 modalHeading="Select Answer"
@@ -1263,16 +1262,16 @@ const ReportSubmission = ({navigation, route}: any): any => {
           ) : (
             <>
               <DropDownModalView
-                title="C. APPLICATION"
+                title="C. CRITICAL THINKING"
                 selectedValue={setCtAnswer}
-                subTitle=" How is the student able to recite Quranic verses with accurate pronunciation, vowels, punctuation, and tajweed?"
+                subTitle="How well does the student solve different types of questions with minimal guidance?"
                 placeHolder="Select Answer"
                 option={CT}
                 modalHeading="Critical Thinking"
               />
               <DropDownModalView
                 selectedValue={setCtAnswer2}
-                subTitle=" How well is the student able to apply the knowledge and practices learned (wudhu, salah) to their daily lives?"
+                subTitle="How well is the is the student able to answer questions using a variety of methods and concepts?"
                 placeHolder="Select Answer"
                 option={CT2}
                 modalHeading="Critical Thinking"
@@ -1350,7 +1349,7 @@ const ReportSubmission = ({navigation, route}: any): any => {
               <DropDownModalView
                 title="D. OBSERVATION"
                 selectedValue={setObservationEReport}
-                subTitle="What is the student's learning style? Do you believe it is effective for them?"
+                subTitle="How well does the student solve different types of questions with minimal guidance?"
                 placeHolder="Select Answer"
                 option={Observation}
                 modalHeading="Observation"
