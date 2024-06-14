@@ -19,6 +19,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import axios from 'axios';
 import {Base_Uri} from '../../constant/BaseUri';
 import CustomLoader from '../../Component/CustomLoader';
+import Clock from '../../SVGs/Clock';
 
 
 function EditPostpondClass({navigation, route}: any) {
@@ -502,10 +503,11 @@ function EditPostpondClass({navigation, route}: any) {
                     <TouchableOpacity
                       activeOpacity={0.8}
                       onPress={() => setClassDate('time', true)}>
-                      <Image
+                      {/* <Image
                         source={require('../../Assets/Images/ClockiconCopy.png')}
                         style={{width: 20, height: 20}}
-                      />
+                      /> */}
+                      <Clock width={20} height={20}/>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -540,10 +542,11 @@ function EditPostpondClass({navigation, route}: any) {
                         : endTimeFormatted}
                     </Text>
                     <TouchableOpacity activeOpacity={0.8}>
-                      <Image
+                    <Clock width={20} height={20}/>
+                      {/* <Image
                         source={require('../../Assets/Images/ClockiconCopy.png')}
                         style={{width: 20, height: 20}}
-                      />
+                      /> */}
                     </TouchableOpacity>
                   </View>
                 </View>

@@ -397,10 +397,11 @@ function AddClass({navigation}: any) {
                 activeOpacity={0.8}
                 // onPress={() => setClassDate('time', index)}
               >
-                <Image
+                <Clock width={20} height={20}/>
+                {/* <Image
                   source={require('../../Assets/Images/ClockiconCopy.png')}
                   style={{width: 20, height: 20}}
-                />
+                /> */}
               </TouchableOpacity>
             </View>
           </View>

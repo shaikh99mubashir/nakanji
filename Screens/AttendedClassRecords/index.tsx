@@ -205,7 +205,7 @@ const AttendedClassRecords = ({navigation,route}:any) => {
                   {item?.classMode?.toLowerCase() == 'physical' &&
                   <View
                     style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
-                    <Feather name="map-pin" size={18} color={'#298CFF'} />
+                    <Feather name="map-pin" size={18} color={Theme.darkGray} />
                     <Text
                       style={[
                         styles.textType3,
@@ -216,7 +216,7 @@ const AttendedClassRecords = ({navigation,route}:any) => {
                   </View>
                 }
                 </View>
-                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                {/* <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                   <Text
                     style={[
                       styles.textType3,
@@ -231,7 +231,27 @@ const AttendedClassRecords = ({navigation,route}:any) => {
                     ]}>
                     {item?.classMode}
                   </Text>
-                </View>
+                </View> */}
+                 <View style={{alignItems: 'center', justifyContent: 'center'}}>
+              <Text
+                style={[
+                  styles.textType3,
+                  {
+                    // color: '#003E9C',
+                    // backgroundColor: '#298CFF33',
+                    color: item.classMode == 'online' ? Theme.darkGray : '#1FC07D',
+                    backgroundColor:
+                      item.classMode == 'online' ? '#BCC4C9' :Theme.jobticketBG,
+                    fontFamily: 'Circular Std Medium',
+                    paddingVertical: 5,
+                    paddingHorizontal: 30,
+                    borderRadius: 30,
+                    textTransform: 'capitalize',
+                  },
+                ]}>
+                {item?.classMode}
+              </Text>
+            </View>
               </View>
     
               <View
@@ -253,7 +273,7 @@ const AttendedClassRecords = ({navigation,route}:any) => {
                       flexDirection: 'row',
                       gap: 10,
                     }}>
-                    <AntDesign name="copy1" size={18} color={'#298CFF'} />
+                    <AntDesign name="copy1" size={18} color={Theme.darkGray} />
                     <Text style={styles.textType3}>Subject</Text>
                   </View>
                   <Text
@@ -278,7 +298,7 @@ const AttendedClassRecords = ({navigation,route}:any) => {
                       flexDirection: 'row',
                       gap: 10,
                     }}>
-                    <FontAwesome name="user-o" size={18} color={'#298CFF'} />
+                    <FontAwesome name="user-o" size={18} color={Theme.darkGray} />
                     <Text style={styles.textType3}>Student</Text>
                   </View>
                   <Text
@@ -303,7 +323,7 @@ const AttendedClassRecords = ({navigation,route}:any) => {
                       flexDirection: 'row',
                       gap: 12,
                     }}>
-                    <FontAwesome name="level-up" size={18} color={'#298CFF'} />
+                    <FontAwesome name="level-up" size={18} color={Theme.darkGray} />
                     <Text style={styles.textType3}>Level</Text>
                   </View>
                   <Text
@@ -331,11 +351,11 @@ const AttendedClassRecords = ({navigation,route}:any) => {
                       gap: 10,
                       paddingHorizontal: 10,
                     }}>
-                    <AntDesign name="calendar" size={20} color={'#298CFF'} />
+                    <AntDesign name="calendar" size={20} color={Theme.darkGray} />
                     <Text
                       style={[
                         styles.textType3,
-                        { color: '#298CFF', textTransform: 'capitalize' },
+                        { color: Theme.darkGray, textTransform: 'capitalize' },
                       ]}>
                       {item?.classDate}
                     </Text>
@@ -355,11 +375,11 @@ const AttendedClassRecords = ({navigation,route}:any) => {
                       flexDirection: 'row',
                       gap: 10,
                     }}>
-                    <AntDesign name="clockcircleo" size={20} color={'#298CFF'} />
+                    <AntDesign name="clockcircleo" size={20} color={Theme.darkGray} />
                     <Text
                       style={[
                         styles.textType3,
-                        { color: '#298CFF', textTransform: 'capitalize' },
+                        { color: Theme.darkGray, textTransform: 'capitalize' },
                       ]}>
                       {item?.totalTime} Hrs
                     </Text>

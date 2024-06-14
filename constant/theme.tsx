@@ -19,7 +19,6 @@ const Theme = {
     ironsidegrey1:'#666666',
     liteBlue: '#f7f7f7',
     lightGreen:'rgba(31, 192, 125, 0.20)'
-
 }
 
 

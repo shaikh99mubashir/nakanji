@@ -24,66 +24,13 @@ const AppliedDetails = ({ route, navigation }: any) => {
   const data = route.params;
   console.log('data', data);
 
-  const [openDetailItem, setopenDetailItem] = useState({
-    comment: '',
-  });
+ 
 
   const tutor = useContext(TutorDetailsContext);
   let { tutorDetails, updateTutorDetails } = tutor;
-  console.log("tutorDetails",tutorDetails);
+
   
-  const [loading, setLoading] = useState(false);
-
-  // console.log(openDetailItem.comment, "comment")
-
-  // console.log(data, "dataaa")
-  // console.log('idddddddddddddd',data)
-  const sendOpenDetailData = async () => {
-    let tutorData: any = await AsyncStorage.getItem('loginAuth');
-
-    tutorData = await JSON.parse(tutorData);
-
-    let subjectId = data?.subject_id;
-    // let ticket_id = data?.ticket_id
-    let ticketID = data?.ticketID;
-    // let id = data?.id
-    let tutor_id = tutorData?.tutorID;
-    let comment = openDetailItem.comment ? openDetailItem?.comment : null;
-    // console.log('idddddddddddddd',data.id)
-    console.log(subjectId, "subjectId")
-    console.log(ticketID, "ticketID")
-    console.log(tutor_id, "tutor_id")
-    console.log(comment, "comment")
-
-    setLoading(true);
-    axios
-      .get(
-        `${Base_Uri}offerSendByTutor/${subjectId}/${tutor_id}/${ticketID}/${comment}`,
-      )
-      .then(({ data }) => {
-
-
-
-        if (data?.result?.status == 'pending') {
-          setLoading(false);
-          ToastAndroid.show(
-            'You have successfully applied for this ticket',
-            ToastAndroid.SHORT,
-          );
-          navigation.navigate('Job Ticket', ticketID);
-        } else {
-          console.log(data, 'dataaa');
-          ToastAndroid.show(data?.result, ToastAndroid.SHORT);
-          setLoading(false);
-        }
-      })
-      .catch(error => {
-        setLoading(false);
-        console.log(error, 'error');
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
-      });
-  };
-  // console.log('data=============>', data);
+ 
 
   return (
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
@@ -175,7 +122,7 @@ const AppliedDetails = ({ route, navigation }: any) => {
                   <FontAwesome
                     name="user-o"
                     size={18}
-                    color={'#298CFF'}
+                    color={Theme.darkGray}
                   />
                   <Text style={styles.textType3}>Student Name</Text>
                 </View>
@@ -199,7 +146,7 @@ const AppliedDetails = ({ route, navigation }: any) => {
                   <FontAwesome
                     name="graduation-cap"
                     size={18}
-                    color={'#298CFF'}
+                    color={Theme.darkGray}
                   />
                   <Text style={styles.textType3}>Student Detail</Text>
                 </View>
@@ -224,7 +171,7 @@ const AppliedDetails = ({ route, navigation }: any) => {
                   <Feather
                     name="hash"
                     size={18}
-                    color={'#298CFF'}
+                    color={Theme.darkGray}
                   />
                   <Text style={styles.textType3}>No. of Sessions</Text>
                 </View>
@@ -233,7 +180,7 @@ const AppliedDetails = ({ route, navigation }: any) => {
                   style={[
                     styles.textType1,
                     {
-                      color: '#003E9C',
+                      color: Theme.darkGray,
                       backgroundColor: '#298CFF33',
                       paddingVertical: 2,
                       // paddingHorizontal: 10,
@@ -274,12 +221,12 @@ const AppliedDetails = ({ route, navigation }: any) => {
                   <FontAwesome
                     name="level-up"
                     size={22}
-                    color={'#298CFF'}
+                    color={Theme.darkGray}
                   />
                   <Text style={styles.textType3}>Level</Text>
                 </View>
                 <Text style={[styles.textType1, { fontSize: 18 }]}>
-                {data?.categoryName}
+                {data?.level}
                 </Text>
               </View>
               <View
@@ -298,7 +245,7 @@ const AppliedDetails = ({ route, navigation }: any) => {
                   <AntDesign
                     name="copy1"
                     size={18}
-                    color={'#298CFF'}
+                    color={Theme.darkGray}
                   />
                   <Text style={styles.textType3}>Subject</Text>
                 </View>
@@ -325,7 +272,7 @@ const AppliedDetails = ({ route, navigation }: any) => {
                   <FontAwesome
                     name="user-o"
                     size={18}
-                    color={'#298CFF'}
+                    color={Theme.darkGray}
                   />
                   <Text style={styles.textType3}>Pref. Tutor</Text>
                 </View>
@@ -340,9 +287,9 @@ const AppliedDetails = ({ route, navigation }: any) => {
                     <AntDesign
                       name="calendar"
                       size={20}
-                      color={'#298CFF'}
+                      color={Theme.darkGray}
                     />
-                    <Text style={[styles.textType3, { color: '#298CFF' }]}>{data?.classDay}</Text>
+                    <Text style={[styles.textType3, { color: Theme.darkGray }]}>{data?.classDayType}</Text>
                   </View>
                 </View>
                 <View style={{ backgroundColor: "#E6F2FF", paddingVertical: 10, borderRadius: 10, paddingHorizontal: 10 }}>
@@ -350,9 +297,9 @@ const AppliedDetails = ({ route, navigation }: any) => {
                     <AntDesign
                       name="clockcircleo"
                       size={20}
-                      color={'#298CFF'}
-                    />
-                    <Text style={[styles.textType3, { color: '#298CFF' }]}>{data?.classTime}</Text>
+                      color={Theme.darkGray}
+                    />  
+                    <Text style={[styles.textType3, { color: Theme.darkGray }]}>{data?.classTime}</Text>
                   </View>
                 </View>
 
