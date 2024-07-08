@@ -140,14 +140,22 @@ const Verification = ({ navigation, route }: any) => {
               if (
                 tutorData?.tutorDetailById[0]?.full_name == null && tutorData?.tutorDetailById[0]?.email == null
               ) {
+                console.log('Signup');
                 navigation.replace('Signup', tutorData)
               }
               else if(tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'unverified' || tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'verified'){
+               console.log('Main');
+               
                 navigation.reset({
                   index: 0,
                   routes: [{ name: 'Main' }],
                 });
                 ToastAndroid.show(`Login Successfully`, ToastAndroid.SHORT);
+              }
+              else{
+                AsyncStorage.removeItem('loginAuth');
+                navigation.replace('Login');
+                ToastAndroid.show('Terminated', ToastAndroid.SHORT);
               }
             });
         }

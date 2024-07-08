@@ -34,6 +34,7 @@ import Status from '../Status';
 import filterContext from '../../context/filterContext';
 import CustomLoader from '../../Component/CustomLoader';
 import BackToDashboard from '../../Component/BackToDashboard';
+import subscribeToChannel from '../../Component/subscribeToChannel';
 interface LoginAuth {
   status: Number;
   tutorID: Number;
@@ -226,7 +227,8 @@ function JobTicket({navigation, route}: any) {
     // if(isVerified){
     //   setModalVisible(true)
     // }
-
+    console.log('tutorId====>',tutorId);
+    
     axios
       .get(`${Base_Uri}getTutorDetailByID/${tutorId}`)
       .then(({data}) => {
@@ -253,7 +255,8 @@ function JobTicket({navigation, route}: any) {
         };
         updateTutorDetails(details);
         if (
-          tutorDetailById[0].status.toLowerCase() == 'verified' &&
+          tutorDetailById[0].status.toLowerCase() == 'verified' 
+          &&
           tutorDetailById[0]?.open_dashboard != 'yes'
         ) {
           axios
@@ -269,7 +272,7 @@ function JobTicket({navigation, route}: any) {
       })
       .catch(error => {
         ToastAndroid.show(
-          'Internal Server Error getTutorDetailByID ',
+          'Internal Server Error getTutorDetailByID',
           ToastAndroid.SHORT,
         );
       });
@@ -397,16 +400,59 @@ function JobTicket({navigation, route}: any) {
       getTicketsData();
       getAppliedData();
 
-      const intervalId = setInterval(() => {
-        checkTutorStatus();
-        getTicketsData();
-        getAppliedData();
-      }, 30000); // 60000 milliseconds = 1 minute
+      // const intervalId = setInterval(() => {
+      //   checkTutorStatus();
+      //   getTicketsData();
+      //   getAppliedData();
+      // }, 30000); // 60000 milliseconds = 1 minute
 
-      // Clean up the interval when the component unmounts or dependencies change
-      return () => clearInterval(intervalId);
+      // // Clean up the interval when the component unmounts or dependencies change
+      // return () => clearInterval(intervalId);
     }
   }, [route, refresh, tutorId]);
+
+  
+
+  useEffect(() => {
+    const unsubscribe = subscribeToChannel({
+      channelName: 'tutor-approved',
+      eventName: 'App\\Events\\TutorApproved',
+      callback: (data:any) => {
+        console.log('Event received:', data);
+        checkTutorStatus();
+      }
+    });
+
+    return unsubscribe;
+  }, [focus]);
+
+  useEffect(() => {
+    const unsubscribe = subscribeToChannel({
+      channelName: 'ticket-created',
+      eventName: 'App\\Events\\TicketCreated',
+      callback: (data:any) => {
+        console.log('Event received:', data);
+        checkTutorStatus();
+        getTicketsData();
+      }
+    });
+
+    return unsubscribe;
+  }, [focus]);
+
+  useEffect(() => {
+    const unsubscribe = subscribeToChannel({
+      channelName: 'tutor-offers',
+      eventName: 'App\\Events\\TutorOffers',
+      callback: (data:any) => {
+        console.log('Event received:', data);
+        getAppliedData()
+        checkTutorStatus();
+      }
+    });
+
+    return unsubscribe; 
+  }, [focus]);
 
   const HandelGoToDashboard = () => {
     setModalVisible(false);
@@ -1265,7 +1311,6 @@ function JobTicket({navigation, route}: any) {
         filter
         navigation={navigation}
       />
-
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

@@ -38,6 +38,7 @@ import Money from '../../SVGs/Money';
 import Student from '../../SVGs/Student';
 import Clock from '../../SVGs/Clock';
 import Schedule from '../../SVGs/Schedule';
+import subscribeToChannel from '../../Component/subscribeToChannel';
 function Home({ navigation, route }: any) {
   let key = route.key;
 
@@ -609,6 +610,21 @@ function Home({ navigation, route }: any) {
       getAssignedTicket();
     }
   }, [cummulativeCommission, refreshing, tutorId, focus]);
+  
+  useEffect(() => {
+    const unsubscribe = subscribeToChannel({
+      channelName: 'mobile-home-page-updated',
+      eventName: 'App\\Events\\MobileHomePageUpdated',
+      callback: (data:any) => {
+        console.log('Event received:', data);
+        // getAttendedHours();
+        getScheduledHours();
+        getCummulativeCommission()
+      }
+    });
+
+    return unsubscribe;
+  }, [focus]);
 
   const routeToScheduleScreen = async (item: any) => {
     interface LoginAuth {
@@ -982,6 +998,9 @@ function Home({ navigation, route }: any) {
     getTutorDetailss();
   }, [focus,refreshing]);
 
+
+
+
   return (
     // return !cancelledHours ? (
     //   <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -1216,7 +1235,7 @@ function Home({ navigation, route }: any) {
                         styles.textType1,
                         { color: 'white', fontSize: 30, lineHeight: 40 },
                       ]}>
-                      RM {cummulativeCommission ? cummulativeCommission : '0.00'}
+                      RM {cummulativeCommission && cummulativeCommission}
                     </Text>
                     <Text
                       style={[
@@ -1306,7 +1325,7 @@ function Home({ navigation, route }: any) {
                         styles.textType1,
                         { fontSize: 30, lineHeight: 40 },
                       ]}>
-                      {attendedHours ? attendedHours : '0.0'}
+                      {attendedHours && attendedHours }
                     </Text>
                   </View>
                 </View>
@@ -1339,7 +1358,7 @@ function Home({ navigation, route }: any) {
                         styles.textType1,
                         { fontSize: 30, lineHeight: 40 },
                       ]}>
-                      {schedulesHours ? schedulesHours : '0.0'}
+                      {schedulesHours && schedulesHours }
                     </Text>
                   </View>
                 </View>
