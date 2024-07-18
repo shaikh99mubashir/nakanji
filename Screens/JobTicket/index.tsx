@@ -51,7 +51,7 @@ function JobTicket({navigation, route}: any) {
   let {jobTicketBanner, setJobTicketBanner} = bannerCont;
   let loginData: LoginAuth;
   const [isSearchItems, setIsSearchItems] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
   const tutor = useContext(TutorDetailsContext);
   const [modalVisible, setModalVisible] = useState(false);
@@ -99,7 +99,7 @@ function JobTicket({navigation, route}: any) {
   const onRefresh = React.useCallback(() => {
     if (!refreshing) {
       // setRefreshing(true);
-      setLoading(true);
+      // setLoading(true);
       setTimeout(() => {
         setRefreshing(false);
         setOpenPPModal(true);
@@ -222,60 +222,114 @@ function JobTicket({navigation, route}: any) {
     getCities();
   }, [refreshing]);
   let isVerified = false;
+  // const checkTutorStatus = async () => {
+  //   axios
+  //     .get(`${Base_Uri}getTutorDetailByID/${tutorId}`)
+  //     .then(({data}) => {
+  //       let {tutorDetailById} = data;
+  //       let tutorDetails = tutorDetailById[0];
+  //       if (data.tutorDetailById == null) {
+  //         AsyncStorage.removeItem('loginAuth');
+  //         navigation.replace('Login');
+  //         setTutorDetail('');
+  //         ToastAndroid.show('Terminated', ToastAndroid.SHORT);
+  //         return;
+  //       }
+  //       let details = {
+  //         full_name: tutorDetails?.full_name,
+  //         email: tutorDetails?.email,
+  //         displayName: tutorDetails?.displayName,
+  //         gender: tutorDetails?.gender,
+  //         phoneNumber: tutorDetails?.phoneNumber,
+  //         age: tutorDetails?.age,
+  //         nric: tutorDetails?.nric,
+  //         tutorImage: tutorDetails?.tutorImage,
+  //         tutorId: tutorDetails?.id,
+  //         status: tutorDetails?.status,
+  //       };
+  //       updateTutorDetails(details);
+  //       if (
+  //         tutorDetailById[0].status.toLowerCase() == 'verified' 
+  //         &&
+  //         tutorDetailById[0]?.open_dashboard != 'yes'
+  //       ) {
+  //         axios
+  //           .get(`${Base_Uri}api/update_dashboard_status/${tutorId}`)
+  //           .then(({data}) => {
+  //             setModalVisible(true);
+  //           })
+  //           .catch((error: any) => {
+  //             console.log('errror========>', error);
+  //           });
+  //         return;
+  //       }
+  //     })
+  //     .catch(error => {
+  //       ToastAndroid.show(
+  //         'Internal Server Error getTutorDetailByID',
+  //         ToastAndroid.SHORT,
+  //       );
+  //     });
+  // };
+
   const checkTutorStatus = async () => {
-    // isVerified = true
-    // if(isVerified){
-    //   setModalVisible(true)
-    // }
-    console.log('tutorId====>',tutorId);
-    
-    axios
-      .get(`${Base_Uri}getTutorDetailByID/${tutorId}`)
-      .then(({data}) => {
-        let {tutorDetailById} = data;
-        let tutorDetails = tutorDetailById[0];
-        if (data.tutorDetailById == null) {
-          AsyncStorage.removeItem('loginAuth');
-          navigation.replace('Login');
-          setTutorDetail('');
-          ToastAndroid.show('Terminated', ToastAndroid.SHORT);
-          return;
-        }
-        let details = {
-          full_name: tutorDetails?.full_name,
-          email: tutorDetails?.email,
-          displayName: tutorDetails?.displayName,
-          gender: tutorDetails?.gender,
-          phoneNumber: tutorDetails?.phoneNumber,
-          age: tutorDetails?.age,
-          nric: tutorDetails?.nric,
-          tutorImage: tutorDetails?.tutorImage,
-          tutorId: tutorDetails?.id,
-          status: tutorDetails?.status,
-        };
-        updateTutorDetails(details);
-        if (
-          tutorDetailById[0].status.toLowerCase() == 'verified' 
-          &&
-          tutorDetailById[0]?.open_dashboard != 'yes'
-        ) {
-          axios
-            .get(`${Base_Uri}api/update_dashboard_status/${tutorId}`)
-            .then(({data}) => {
-              setModalVisible(true);
-            })
-            .catch((error: any) => {
-              console.log('errror========>', error);
-            });
-          return;
-        }
-      })
-      .catch(error => {
+    console.log("tutorId",tutorId);
+    try {
+      const data: any = await AsyncStorage.getItem('loginAuth');
+      loginData = JSON.parse(data);
+      let {tutorID} = loginData;
+      
+      const response = await axios.get(`${Base_Uri}getTutorDetailByID/${tutorID}`);
+      const { tutorDetailById } = response.data;
+      const tutorDetails = tutorDetailById[0];
+
+      if (!tutorDetailById) {
+        await AsyncStorage.removeItem('loginAuth');
+        navigation.replace('Login');
+        setTutorDetail('');
         ToastAndroid.show(
-          'Internal Server Error getTutorDetailByID',
-          ToastAndroid.SHORT,
-        );
-      });
+          'Terminated',
+          ToastAndroid.SHORT)
+        return;
+      }
+  
+      const details = {
+        full_name: tutorDetails?.full_name,
+        email: tutorDetails?.email,
+        displayName: tutorDetails?.displayName,
+        gender: tutorDetails?.gender,
+        phoneNumber: tutorDetails?.phoneNumber,
+        age: tutorDetails?.age,
+        nric: tutorDetails?.nric,
+        tutorImage: tutorDetails?.tutorImage,
+        tutorId: tutorDetails?.id,
+        status: tutorDetails?.status,
+      };
+      updateTutorDetails(details);
+  
+      if (
+        tutorDetails.status.toLowerCase() === 'verified' &&
+        tutorDetails?.open_dashboard !== 'yes'
+      ) {
+        await axios.get(`${Base_Uri}api/update_dashboard_status/${tutorId}`);
+        setModalVisible(true);
+      }
+    } catch (error:any) {
+      console.log('Error:', error);
+
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        console.log('Server responded with data:', error.response.data);
+        console.log('Status code:', error.response.status);
+        console.log('Headers:', error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.log('No response received:', error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error setting up the request:', error.message);
+      }
+    }
   };
 
   const getTicketsData = async () => {
@@ -312,10 +366,10 @@ function JobTicket({navigation, route}: any) {
         })
         .catch(error => {
           setLoading(false);
-          ToastAndroid.show(
-            'Internal Server Error ticketsAPI1',
-            ToastAndroid.SHORT,
-          );
+          // ToastAndroid.show(
+          //   // 'Internal Server Error ticketsAPI1',
+          //   ToastAndroid.SHORT,
+          // );
         });
 
       return;
@@ -331,10 +385,10 @@ function JobTicket({navigation, route}: any) {
         })
         .catch(error => {
           setLoading(false);
-          ToastAndroid.show(
-            'Internal Server Error ticketsAPI',
-            ToastAndroid.SHORT,
-          );
+          // ToastAndroid.show(
+          //   'Internal Server Error ticketsAPI',
+          //   ToastAndroid.SHORT,
+          // );
         });
     }
   };
@@ -364,10 +418,10 @@ function JobTicket({navigation, route}: any) {
           setLoading(false);
         })
         .catch(error => {
-          ToastAndroid.show(
-            'Internal Server Error getTutorOffers filter DATA',
-            ToastAndroid.SHORT,
-          );
+          // ToastAndroid.show(
+          //   'Internal Server Error getTutorOffers filter DATA',
+          //   ToastAndroid.SHORT,
+          // );
           setLoading(false);
         });
       return;
@@ -381,10 +435,10 @@ function JobTicket({navigation, route}: any) {
         setLoading(false);
       })
       .catch(error => {
-        ToastAndroid.show(
-          'Internal Server Error getTutorOffers3',
-          ToastAndroid.SHORT,
-        );
+        // ToastAndroid.show(
+        //   'Internal Server Error getTutorOffers3',
+        //   ToastAndroid.SHORT,
+        // );
         setLoading(false);
       });
   };
@@ -395,7 +449,7 @@ function JobTicket({navigation, route}: any) {
 
   useEffect(() => {
     if (tutorId) {
-      setLoading(true);
+      // setLoading(true);
       checkTutorStatus();
       getTicketsData();
       getAppliedData();
@@ -418,7 +472,7 @@ function JobTicket({navigation, route}: any) {
       channelName: 'tutor-approved',
       eventName: 'App\\Events\\TutorApproved',
       callback: (data:any) => {
-        console.log('Event received:', data);
+        console.log('Event received: verified', data);
         checkTutorStatus();
       }
     });
@@ -432,7 +486,7 @@ function JobTicket({navigation, route}: any) {
       eventName: 'App\\Events\\TicketCreated',
       callback: (data:any) => {
         console.log('Event received:', data);
-        checkTutorStatus();
+        // checkTutorStatus();
         getTicketsData();
       }
     });
@@ -447,7 +501,7 @@ function JobTicket({navigation, route}: any) {
       callback: (data:any) => {
         console.log('Event received:', data);
         getAppliedData()
-        checkTutorStatus();
+        // checkTutorStatus();
       }
     });
 
@@ -466,9 +520,6 @@ function JobTicket({navigation, route}: any) {
         },
       ],
     });
-  };
-  const checkSearchItems = () => {
-    searchText && foundName.length == 0 && setIsSearchItems(true);
   };
 
   const [foundName, setFoundName] = useState([]);
@@ -1256,7 +1307,7 @@ function JobTicket({navigation, route}: any) {
       .get(`${Base_Uri}api/bannerAds`)
       .then(({data}) => {})
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
 
@@ -1312,9 +1363,9 @@ function JobTicket({navigation, route}: any) {
         navigation={navigation}
       />
       <ScrollView
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
+        // refreshControl={
+        //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        // }
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled>
         <View style={{paddingHorizontal: 15, marginTop: 20}}>

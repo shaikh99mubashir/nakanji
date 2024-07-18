@@ -56,7 +56,8 @@ const Verification = ({ navigation, route }: any) => {
 
               formData.append('tutor_id', tutorId);
               formData.append('device_token', token);
-
+              // console.log('token',token);
+              
               axios
                 .post(`${Base_Uri}api/getTutorDeviceToken`, formData, {
                   headers: {

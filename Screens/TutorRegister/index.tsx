@@ -255,7 +255,7 @@ const Signup = ({ navigation, route }: any) => {
       }}>
       <ScrollView showsHorizontalScrollIndicator={false} style={{ height: '100%', }}>
         <Text style={[styles.textType1, { fontSize: 35, color: 'black', marginTop: 100, lineHeight: 40 }]}>
-          Welcome To {'\n'}Nakanji
+          Welcome To {'\n'}Nakngaji
         </Text>
         <Text
           style={[

@@ -127,7 +127,8 @@ function Home({ navigation, route }: any) {
   const [schedulesHours, setScheduledHours] = useState('');
   const [tutorStudents, setTutorStudents] = useState([]);
   const [bannerData, setBannerData] = useState([]);
-
+  console.log("attendedHours",attendedHours);
+  
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
@@ -495,10 +496,23 @@ function Home({ navigation, route }: any) {
       });
   };
 
+  
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      DisplayNotification(remoteMessage);
+    });
+    return unsubscribe;
+  }, [focus]);
+
+
+
   const getAttendedHours = () => {
     axios
       .get(`${Base_Uri}getAttendedHours/${tutorId}`)
       .then(({ data }) => {
+        console.log('attended data',data);
+        
         setAttendedHours(data.attendedHours);
       })
       .catch(error => {
@@ -617,14 +631,24 @@ function Home({ navigation, route }: any) {
       eventName: 'App\\Events\\MobileHomePageUpdated',
       callback: (data:any) => {
         console.log('Event received:', data);
+        ToastAndroid.show(`${data}`, ToastAndroid.SHORT);
+      
         // getAttendedHours();
-        getScheduledHours();
-        getCummulativeCommission()
+        // getScheduledHours();
+        if (tutorId && cummulativeCommission) {
+          getCummulativeCommission()
+          getAttendedHours();
+          getScheduledHours();
+          getTutorStudents();
+          getTutorSubjects();
+          getCancelledHours();
+          getAssignedTicket();
+        }
       }
     });
 
     return unsubscribe;
-  }, [focus]);
+  }, [focus,refreshing,cummulativeCommission]);
 
   const routeToScheduleScreen = async (item: any) => {
     interface LoginAuth {

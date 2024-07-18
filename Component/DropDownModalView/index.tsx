@@ -11,7 +11,6 @@ import {
 import React, {useState} from 'react';
 import {Theme} from '../../constant/theme';
 import Header from '../../Component/Header';
-import DropDownPicker from 'react-native-dropdown-picker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';

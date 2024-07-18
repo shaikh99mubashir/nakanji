@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {AppState, StyleSheet, Text, View} from 'react-native';
 import AppNavigation from './Navigation/appNavigation';
 import Timer from './Component/Timer/timer';
 import NoteState from './context/noteState';
@@ -25,6 +25,19 @@ function App() {
     return () => IdleTimerManager.setIdleTimerDisabled(false);
   }, []);
 
+  const handleAppStateChange = (nextAppState:any) => {
+    console.log('App State Changed :', nextAppState);
+    // Handle app state change here
+  };
+  useEffect(() => {
+  
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
+  
+    // Cleanup function
+    return () => {
+      subscription.remove(); // Remove the event listener when component unmounts
+    };
+  }, []);
 
 
   return (

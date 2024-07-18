@@ -115,6 +115,8 @@ function ClockIn({navigation, route}: any) {
               setLoading(false);
   
               data.data = response?.data;
+              console.log("response.data",response.data);
+              
               data.item = item;
               let storageData: any = { ...data };
               
